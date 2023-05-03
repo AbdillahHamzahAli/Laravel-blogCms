@@ -5,52 +5,55 @@
                 <div class="sb-nav-link-icon">
                     <i class="fas fa-tachometer-alt"></i>
                 </div>
-                Dashboard
+                {{ trans('dashboard.link.dashboard') }}
             </a>
-            <div class="sb-sidenav-menu-heading">Master</div>
+            {{-- MENU MASTER --}}
+            <div class="sb-sidenav-menu-heading">{{ trans('dashboard.menu.master') }}</div>
 
             <a class="nav-link" href="#">
                 <div class="sb-nav-link-icon">
                     <i class="far fa-newspaper"></i>
                 </div>
-                Posts
+                {{ trans('dashboard.link.posts') }}
             </a>
             <a class="nav-link" href="#">
                 <div class="sb-nav-link-icon">
                     <i class="fas fa-bookmark"></i>
                 </div>
-                Categories
+                {{ trans('dashboard.link.categories') }}
             </a>
             <a class="nav-link" href="#">
                 <div class="sb-nav-link-icon">
                     <i class="fas fa-tags"></i>
                 </div>
-                Tags
+                {{ trans('dashboard.link.tags') }}
             </a>
-            <div class="sb-sidenav-menu-heading">User permission</div>
+            {{-- MENU USER PERMISSION --}}
+            <div class="sb-sidenav-menu-heading">{{ trans('dashboard.menu.user_permission') }}</div>
             <a class="nav-link" href="#">
                 <div class="sb-nav-link-icon">
                     <i class="fas fa-user"></i>
                 </div>
-                User
+                {{ trans('dashboard.link.users') }}
             </a>
             <a class="nav-link" href="#">
                 <div class="sb-nav-link-icon">
                     <i class="fas fa-user-shield"></i>
                 </div>
-                Role
+                {{ trans('dashboard.link.roles') }}
             </a>
-            <div class="sb-sidenav-menu-heading">Settings</div>
+            {{-- MENU SETTING --}}
+            <div class="sb-sidenav-menu-heading">{{ trans('dashboard.menu.setting') }}</div>
             <a class="nav-link" href="#">
                 <div class="sb-nav-link-icon">
                     <i class="fas fa-photo-video"></i>
                 </div>
-                File manager
+                {{ trans('dashboard.link.file_manager') }}
             </a>
         </div>
     </div>
     <div class="sb-sidenav-footer">
-        <div class="small">Logged in as:</div>
+        <div class="small">{{ trans('dashboard.label.logged_in_as') }}</div>
         <!-- show username -->
         {{ Auth::user()->name }}
     </div>
