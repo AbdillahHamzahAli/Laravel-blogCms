@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
@@ -29,4 +30,5 @@ Auth::routes([
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['web', 'auth']], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::resource('/categories', CategoryController::class);
 });
