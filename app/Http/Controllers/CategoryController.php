@@ -12,7 +12,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('categories.index');
+        $data = [
+            'categories' => Category::onlyParent()->with('descendants')->get()
+        ];
+        return view('categories.index', $data);
     }
 
     /**
