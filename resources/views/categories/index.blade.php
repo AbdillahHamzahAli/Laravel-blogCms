@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'categories')
+@section('title', trans('categories.title.index'))
 
 @section('breadcrumbs')
     {{ Breadcrumbs::render('categories') }}
@@ -17,7 +17,7 @@
                             <form action="" method="GET">
                                 <div class="input-group">
                                     <input name="keyword" type="search" class="form-control"
-                                        placeholder="Search for categories">
+                                        placeholder="{{ trans('categories.form_control.input.search.placeholder') }}">
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" type="submit">
                                             <i class="fas fa-search"></i>
@@ -27,8 +27,8 @@
                             </form>
                         </div>
                         <div class="col-md-6">
-                            <a href="#" class="btn btn-primary float-right" role="button">
-                                Add new
+                            <a href="{{ route('categories.create') }}" class="btn btn-primary float-right" role="button">
+                                {{ trans('categories.button.create.value') }}
                                 <i class="fas fa-plus-square"></i>
                             </a>
                         </div>
