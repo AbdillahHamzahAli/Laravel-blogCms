@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocalizationController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,5 +29,6 @@ Auth::routes([
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['web', 'auth']], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/categories/select', [CategoryController::class, 'select'])->name('categories.select');
     Route::resource('/categories', CategoryController::class);
 });
