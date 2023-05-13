@@ -38,7 +38,7 @@
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <button id="button_category_thumbnail" data-input="input_category_thumbnail"
-                                        class="btn btn-primary" type="button">
+                                        data-preview="holder" class="btn btn-primary" type="button">
                                         {{ trans('categories.button.browse.value') }}
                                     </button>
                                 </div>
@@ -47,6 +47,8 @@
                                     placeholder="{{ trans('categories.form_control.input.thumbnail.placeholder') }}"
                                     readonly />
                             </div>
+                            {{-- preview thumbnail --}}
+                            <div id="holder"></div>
                         </div>
                         <!-- parent_category -->
                         <div class="form-group">
@@ -87,11 +89,18 @@
 @push('javascript-external')
     <script src="{{ asset('vendor/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('vendor/select2/js/i18n/' . app()->getlocale() . '.js') }}"></script>
+    <script src="{{ asset('vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
 @endpush
 
 @push('javascript-internal')
     <script>
         $(function() {
+            function generateSlug(value) {
+                return value.trim()
+                    .toLowerCase()
+                    .replace(/[^a-z\d-]/gi, '-')
+                    .replace(/-+/g, '-').replace(/^-|-$/g, "");
+            }
             //select2 parent category
             $('#select_category_parent').select2({
                 theme: 'bootstrap4',
@@ -113,7 +122,20 @@
                     }
                 }
             });
-
+            // event slug 
+            $('#input_category_title').change(function() {
+                let title = $(this).val();
+                let parent_category = $('#select_category_parent').val() ?? "";
+                $('#input_category_slug').val(generateSlug(title + " " + parent_category))
+            })
+            // event slug 
+            $('#select_category_parent').change(function() {
+                let title = $('#input_category_title').val();
+                let parent_category = $(this).val() ?? "";
+                $('#input_category_slug').val(generateSlug(title + " " + parent_category))
+            })
+            // event thumbnail
+            $('#button_category_thumbnail').filemanager('image');
         })
     </script>
 @endpush
