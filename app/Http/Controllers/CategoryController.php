@@ -79,7 +79,7 @@ class CategoryController extends Controller
             ]);
             Alert::success(
                 trans('categories.alert.create.title'),
-                trans('categories.alert.create.massage.success')
+                trans('categories.alert.create.message.success')
             );
             return redirect()->route('categories.index');
         } catch (\Throwable $th) {
@@ -90,7 +90,7 @@ class CategoryController extends Controller
                 trans('categories.alert.create.title'),
                 trans('categories.alert.create.massage.error', ['error' => $th->getMessage()])
             );
-            return redirect()->back()->withInput($request->all())->withErrors($validator);
+            return redirect()->back()->withInput($request->all());
         }
     }
 
@@ -115,7 +115,59 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        if (isset($request->parent_category)) {
+            $checkDuplicate = Category::where('title', $request->title)->where('parent_id', null)->first();
+            if ($checkDuplicate) {
+                Alert::error('Error', 'Categories cannot be edited!');
+                return redirect()->back();
+            }
+        }
+        // proses validasi
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'title' => 'required|string|max:60',
+                'slug' => 'required|string|unique:categories,slug,' . $category->id,
+                'thumbnail' => 'required',
+                'description' => 'required|string|max:240',
+            ],
+            [],
+            $this->attributes()
+        );
+
+        if ($validator->fails()) {
+            if ($request->has('parent_category')) {
+                $request['parent_category'] = Category::select('id', 'title')->find($request->parent_category);
+            }
+            return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+
+        // proses insert
+        try {
+            $category->update([
+                'title' => $request->title,
+                'slug' => $request->slug,
+                'thumbnail' => parse_url($request->thumbnail)['path'],
+                'description' => $request->description,
+                'parent_id' => $request->parent_category,
+            ]);
+            Alert::success(
+                trans('categories.alert.update.title'),
+                trans('categories.alert.update.message.success')
+            );
+            return redirect()->route('categories.index');
+        } catch (\Throwable $th) {
+            if ($request->has('parent_category')) {
+                $request['parent_category'] = Category::select('id', 'title')->find($request->parent_category);
+            }
+            Alert::error(
+                trans('categories.alert.update.title'),
+                trans('categories.alert.update.massage.error', ['error' => $th->getMessage()])
+            );
+            return redirect()->back()->withInput($request->all());
+        }
+
+        dd($request->all(), $category);
     }
 
     /**

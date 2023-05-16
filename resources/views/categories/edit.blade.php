@@ -11,8 +11,10 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('categories.store') }}" method="POST">
+                    <form action="{{ route('categories.update', ['category' => $category]) }}" method="POST">
+                        @method('PUT')
                         @csrf
+
                         <!-- title -->
                         <div class="form-group">
                             <label for="input_category_title" class="font-weight-bold">
@@ -68,19 +70,23 @@
                             <div id="holder"></div>
                         </div>
                         <!-- parent_category -->
-                        <div class="form-group">
-                            <label for="select_category_parent"
-                                class="font-weight-bold">{{ trans('categories.form_control.select.parent_category.label') }}</label>
-                            <select id="select_category_parent" name="parent_category"
-                                data-placeholder="{{ trans('categories.form_control.select.parent_category.placeholder') }}"
-                                class="custom-select w-100">
-                                @if (old('parent_category', $category->parent))
-                                    <option value="{{ old('parent_category', $category->parent)->id }}" selected>
-                                        {{ old('parent_category', $category->parent)->title }}
-                                    </option>
-                                @endif
-                            </select>
-                        </div>
+                        @if ($category->parent_id != null)
+                            <div class="form-group">
+                                <label for="select_category_parent"
+                                    class="font-weight-bold">{{ trans('categories.form_control.select.parent_category.label') }}</label>
+                                <select id="select_category_parent" name="parent_category"
+                                    data-placeholder="{{ trans('categories.form_control.select.parent_category.placeholder') }}"
+                                    class="custom-select w-100">
+                                    @if (old('parent_category', $category->parent()))
+                                        <option
+                                            value="{{ old(('parent_category')->id ?? '', $category->parent->id ?? '') }}"
+                                            selected disable>
+                                            {{ old(('parent_category')->title ?? '', $category->parent->title ?? '') }}
+                                        </option>
+                                    @endif
+                                </select>
+                            </div>
+                        @endif
                         <!-- description -->
                         <div class="form-group">
                             <label for="input_category_description" class="font-weight-bold">
