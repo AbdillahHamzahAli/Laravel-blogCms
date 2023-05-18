@@ -6,7 +6,8 @@
         </label>
         <div>
             <!-- detail -->
-            <a href="#" class="btn btn-sm btn-primary" role="button">
+            <a href="{{ route('categories.show', ['category' => $category]) }}" class="btn btn-sm btn-primary"
+                role="button">
                 <i class="fas fa-eye"></i>
             </a>
             <!-- edit -->

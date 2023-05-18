@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="{{ asset('vendor/flag-icon-css/css/flag-icon.min.css') }}">
     {{-- css:external --}}
     @stack('css-external')
+    {{-- css:internal --}}
+    @stack('css-internal')
 </head>
 
 <body>
