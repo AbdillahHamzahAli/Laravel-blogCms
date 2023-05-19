@@ -47,3 +47,30 @@
     </div>
 
 @endsection
+
+@push('javascript-internal')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script>
+        $(document).ready(function() {
+            // Event Delete Category
+            $("form[role='alert']").submit(function(event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: $(this).attr('alert-title'),
+                    text: $(this).attr('alert-text'),
+                    icon: 'warning',
+                    allowOutsideClick: false,
+                    showCancelButton: true,
+                    cancelButtonText: $(this).attr('alert-btn-cancel'),
+                    reverseButtons: true,
+                    confirmButtonText: $(this).attr('alert-btn-yes'),
+                }).then((value) => {
+                    if (value) {
+                        // todo: process of deleting categories
+                        alert('hello');
+                    }
+                });
+            });
+        });
+    </script>
+@endpush
