@@ -14,10 +14,12 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-6">
-                            <form action="" method="GET">
+                            {{-- SEARCH CATEGORY --}}
+                            <form action="{{ route('categories.index') }}" method="GET">
                                 <div class="input-group">
                                     <input name="keyword" type="search" class="form-control"
-                                        placeholder="{{ trans('categories.form_control.input.search.placeholder') }}">
+                                        placeholder="{{ trans('categories.form_control.input.search.placeholder') }}"
+                                        value="{{ request()->get('keyword') }}">
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" type="submit">
                                             <i class="fas fa-search"></i>
@@ -49,7 +51,6 @@
 @endsection
 
 @push('javascript-internal')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script>
         $(document).ready(function() {
             // Event Delete Category
@@ -58,16 +59,16 @@
                 Swal.fire({
                     title: $(this).attr('alert-title'),
                     text: $(this).attr('alert-text'),
-                    icon: 'warning',
+
                     allowOutsideClick: false,
                     showCancelButton: true,
                     cancelButtonText: $(this).attr('alert-btn-cancel'),
                     reverseButtons: true,
                     confirmButtonText: $(this).attr('alert-btn-yes'),
-                }).then((value) => {
-                    if (value) {
+                }).then((result) => {
+                    if (result) {
                         // todo: process of deleting categories
-                        alert('hello');
+                        event.target.submit();
                     }
                 });
             });

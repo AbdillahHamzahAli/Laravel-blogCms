@@ -13,10 +13,16 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $categories = Category::with('descendants');
+        if ($request->has('keyword') && trim($request->keyword)) {
+            $categories->search($request->keyword);
+        } else {
+            $categories->onlyParent();
+        }
         $data = [
-            'categories' => Category::onlyParent()->with('descendants')->get()
+            'categories' => $categories->get()
         ];
         return view('categories.index', $data);
     }
@@ -167,7 +173,7 @@ class CategoryController extends Controller
             return redirect()->back()->withInput($request->all());
         }
 
-        dd($request->all(), $category);
+        // dd($request->all(), $category);
     }
 
     /**
@@ -175,7 +181,19 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        try {
+            $category->delete();
+            Alert::success(
+                trans('categories.alert.delete.title'),
+                trans('categories.alert.delete.message.success')
+            );
+        } catch (\Throwable $th) {
+            Alert::error(
+                trans('categories.alert.delete.title'),
+                trans('categories.alert.delete.massage.error', ['error' => $th->getMessage()])
+            );
+        }
+        return redirect()->back();
     }
 
     private function attributes()
