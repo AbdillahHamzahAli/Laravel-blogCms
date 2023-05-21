@@ -22,7 +22,7 @@ class CategoryController extends Controller
             $categories->onlyParent();
         }
         $data = [
-            'categories' => $categories->get()
+            'categories' => $categories->paginate(5)->appends('keyword', $request->get('keyword'))
         ];
         return view('categories.index', $data);
     }
