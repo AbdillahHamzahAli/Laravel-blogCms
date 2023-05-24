@@ -68,7 +68,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        //
+        return view('tags.edit', compact('tag'));
     }
 
     /**
@@ -76,7 +76,27 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+        Validator::make($request->all(), [
+            'title' => 'required|string|max:25',
+            'slug' => 'required|string|unique:tags,slug,' . $tag->id
+        ], [], $this->getAttributes())->validate();
+        try {
+            $tag->update([
+                'title' => $request->title,
+                'slug' => $request->slug
+            ]);
+            Alert::success(
+                trans('categories.alert.update.title'),
+                trans('categories.alert.update.message.success')
+            );
+            return redirect()->route('tags.index');
+        } catch (\Throwable $th) {
+            Alert::error(
+                trans('categories.alert.update.title'),
+                trans('categories.alert.update.massage.error', ['error' => $th->getMessage()])
+            );
+            return redirect()->back()->withInput($request->all());
+        }
     }
 
     /**
