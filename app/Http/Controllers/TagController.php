@@ -10,13 +10,18 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class TagController extends Controller
 {
+    private $perPage = 5;
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tags = Tag::all();
-        return view('tags.index', compact('tags'));
+        $tags = $request->get('keyword')
+            ? Tag::search($request->keyword)->paginate($this->perPage)
+            : Tag::paginate($this->perPage);
+        return view('tags.index', [
+            'tags' => $tags->appends('keyword', $request->get('keyword'))
+        ]);
     }
 
     /**
@@ -104,7 +109,20 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        try {
+            $tag->delete();
+            Alert::success(
+                trans('categories.alert.delete.title'),
+                trans('categories.alert.delete.message.success')
+            );
+            return redirect()->route('tags.index');
+        } catch (\Throwable $th) {
+            Alert::error(
+                trans('categories.alert.delete.title'),
+                trans('categories.alert.delete.massage.error', ['error' => $th->getMessage()])
+            );
+            return redirect()->back();
+        }
     }
 
     private function getAttributes()

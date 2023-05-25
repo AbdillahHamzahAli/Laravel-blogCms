@@ -9,4 +9,8 @@ class Tag extends Model
 {
     use HasFactory;
     protected $fillable = ['title', 'slug'];
+    public function scopeSearch($query, $title)
+    {
+        return $query->where('title', 'LIKE', "%{$title}%");
+    }
 }

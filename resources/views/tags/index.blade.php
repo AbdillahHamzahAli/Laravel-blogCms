@@ -14,9 +14,11 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-6">
-                            <form action="" method="GET">
+                            {{-- SEARCH --}}
+                            <form action="{{ route('tags.index') }}" method="GET">
                                 <div class="input-group">
-                                    <input name="keyword" type="search" class="form-control"
+                                    <input name="keyword" value="{{ request()->get('keyword') }}" type="search"
+                                        class="form-control"
                                         placeholder="{{ trans('tags.form_control.input.search.placeholder') }}">
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" type="submit">
@@ -40,12 +42,48 @@
                         @if (count($tags))
                             @include('tags._tags-list', ['tags' => $tags])
                         @else
-                            <p>{{ trans('tags.label.no_data.fetch') }}</p>
+                            <p>
+                                @if (request()->get('keyword'))
+                                    {{ trans('tags.label.no_data.fetch', ['search' => request()->get('keyword')]) }}
+                                @else
+                                    {{ trans('tags.label.no_data.fetch') }}
+                                @endif
+                            </p>
                         @endif
                     </ul>
                 </div>
+                @if ($tags->hasPages())
+                    <div class="card-footer">
+                        {{ $tags->links('vendor.pagination.bootstrap-5') }}
+                    </div>
+                @endif
             </div>
         </div>
     </div>
 
 @endsection
+
+@push('javascript-internal')
+    <script>
+        $(document).ready(function() {
+            // Delete Tag
+            $("form[role='alert']").submit(function(event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: "{{ trans('tags.alert.delete.title') }}",
+                    text: $(this).attr('alert-text'),
+                    allowOutsideClick: false,
+                    showCancelButton: true,
+                    cancelButtonText: "{{ trans('tags.button.cancel.value') }}",
+                    reverseButtons: true,
+                    confirmButtonText: "{{ trans('tags.button.delete.value') }}",
+                }).then((result) => {
+                    if (result) {
+                        // todo: process of deleting categories
+                        event.target.submit();
+                    }
+                });
+            })
+        })
+    </script>
+@endpush
