@@ -66,14 +66,9 @@ Breadcrumbs::for('edit_tags', function (BreadcrumbTrail $trail, $tag) {
     $trail->push('Edit', route('tags.edit', ['tag' => $tag]));
     $trail->push($tag->title, route('tags.edit', ['tag' => $tag]));
 });
-// // Home > Blog
-// Breadcrumbs::for('blog', function (BreadcrumbTrail $trail) {
-//     $trail->parent('home');
-//     $trail->push('Blog', route('blog'));
-// });
 
-// // Home > Blog > [Category]
-// Breadcrumbs::for('category', function (BreadcrumbTrail $trail, $category) {
-//     $trail->parent('blog');
-//     $trail->push($category->title, route('category', $category));
-// });
+// Dashboard > Posts
+Breadcrumbs::for('posts', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Post', route('posts.index'));
+});

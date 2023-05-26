@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocalizationController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
 
 /*
@@ -32,11 +33,13 @@ Auth::routes([
 Route::group(['prefix' => 'dashboard', 'middleware' => ['web', 'auth']], function () {
     //dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+    //posts
+    Route::resource('/posts', PostController::class);
     //categories
     Route::get('/categories/select', [CategoryController::class, 'select'])->name('categories.select');
     Route::resource('/categories', CategoryController::class);
     //tags
-    Route::resource('/tags', TagController::class);
+    Route::resource('/tags', TagController::class)->except(['show']);
     // file manager
     Route::group(['prefix' => 'laravel-filemanager'], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
