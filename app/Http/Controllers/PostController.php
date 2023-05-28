@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        return view('posts.create', [
+            'categories' => Category::with('descendants')->onlyParent()->get(),
+            'statuses' => $this->statuses()
+        ]);
     }
 
     /**
@@ -62,5 +66,13 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+
+    private function statuses()
+    {
+        return [
+            'draft' => trans('posts.form_control.select.status.option.draft'),
+            'publish' => trans('posts.form_control.select.status.option.publish')
+        ];
     }
 }

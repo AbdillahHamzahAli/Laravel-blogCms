@@ -20,7 +20,8 @@
                                         {{ trans('posts.form_control.input.title.label') }}
                                     </label>
                                     <input id="input_post_title" value="" name="title" type="text"
-                                        class="form-control" placeholder="" />
+                                        class="form-control"
+                                        placeholder="{{ trans('posts.form_control.input.title.placeholder') }}" />
                                 </div>
                                 <!-- slug -->
                                 <div class="form-group">
@@ -28,7 +29,8 @@
                                         {{ trans('posts.form_control.input.slug.label') }}
                                     </label>
                                     <input id="input_post_slug" value="" name="slug" type="text"
-                                        class="form-control" placeholder="" readonly />
+                                        class="form-control"
+                                        placeholder="{{ trans('posts.form_control.input.slug.placeholder') }}" readonly />
                                 </div>
                                 <!-- thumbnail -->
                                 <div class="form-group">
@@ -43,7 +45,9 @@
                                             </button>
                                         </div>
                                         <input id="input_post_thumbnail" name="thumbnail" value="" type="text"
-                                            class="form-control" placeholder="" readonly />
+                                            class="form-control"
+                                            placeholder="{{ trans('posts.form_control.input.thumbnail.placeholder') }}"
+                                            readonly />
                                     </div>
                                 </div>
                                 <!-- description -->
@@ -51,14 +55,17 @@
                                     <label for="input_post_description" class="font-weight-bold">
                                         {{ trans('posts.form_control.textarea.description.label') }}
                                     </label>
-                                    <textarea id="input_post_description" name="description" placeholder="" class="form-control " rows="3"></textarea>
+                                    <textarea id="input_post_description" name="description"
+                                        placeholder="{{ trans('posts.form_control.textarea.description.placeholder') }}" class="form-control "
+                                        rows="3"></textarea>
                                 </div>
                                 <!-- content -->
                                 <div class="form-group">
                                     <label for="input_post_content" class="font-weight-bold">
                                         {{ trans('posts.form_control.textarea.content.label') }}
                                     </label>
-                                    <textarea id="input_post_content" name="content" placeholder="" class="form-control " rows="20"></textarea>
+                                    <textarea id="input_post_content" name="content"
+                                        placeholder="{{ trans('posts.form_control.textarea.content.placeholder') }}" class="form-control " rows="20"></textarea>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -69,12 +76,7 @@
                                     </label>
                                     <div class="form-control overflow-auto" style="height: 886px">
                                         <!-- List category -->
-                                        <ul class="pl-1 my-1" style="list-style: none;">
-                                            <li class="form-group form-check my-1">
-                                                <input class="form-check-input" type="checkbox" name="category[]">
-                                                <label class="form-check-label">Check me out</label>
-                                            </li>
-                                        </ul>
+                                        @include('posts._category-list', $categories)
                                         <!-- List category -->
                                     </div>
                                 </div>
@@ -87,10 +89,10 @@
                                     <label for="select_post_tag" class="font-weight-bold">
                                         {{ trans('posts.form_control.select.tag.label') }}
                                     </label>
-                                    <select id="select_post_tag" name="tag" data-placeholder=""
+                                    <select id="select_post_tag" name="tag"
+                                        data-placeholder="{{ trans('posts.form_control.select.tag.placeholder') }}"
                                         class="custom-select w-100" multiple>
-                                        <option value="tag1">tag 1</option>
-                                        <option value="tag2">tag 2</option>
+
                                     </select>
                                 </div>
                                 <!-- status -->
@@ -99,8 +101,9 @@
                                         {{ trans('posts.form_control.select.status.label') }}
                                     </label>
                                     <select id="select_post_status" name="status" class="custom-select">
-                                        <option value="draft">Draft</option>
-                                        <option value="publish">Publish</option>
+                                        @foreach ($statuses as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -123,9 +126,21 @@
     </div>
 @endsection
 
+@push('css-external')
+    {{-- SELECT 2 --}}
+    <link rel="stylesheet" href="{{ asset('vendor/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/select2/css/select2-bootstrap4.min.css') }}">
+@endpush
+
 @push('javascript-external')
     {{-- file manager(button) --}}
     <script src="{{ asset('vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
+    {{-- TINY MCE5 --}}
+    <script src="{{ asset('vendor/tinymce5/jquery.tinymce.min.js') }}"></script>
+    <script src="{{ asset('vendor/tinymce5/tinymce.min.js') }}"></script>
+    {{-- SELECT 2 --}}
+    <script src="{{ asset('vendor/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('vendor/select2/js/i18n/' . app()->getlocale() . '.js') }}"></script>
 @endpush
 
 @push('javascript-internal')
@@ -144,6 +159,67 @@
             });
             // event : input thumbnail
             $('#button_post_thumbnail').filemanager('image');
+            // Text editor TINYMCE5
+            $("#input_post_content").tinymce({
+                relative_urls: false,
+                language: "en",
+                plugins: [
+                    "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen",
+                    "insertdatetime media nonbreaking save table directionality",
+                    "emoticons template paste textpattern",
+                ],
+                toolbar1: "fullscreen preview",
+                toolbar2: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+                file_picker_callback: function(callback, value, meta) {
+                    let x = window.innerWidth || document.documentElement.clientWidth || document
+                        .getElementsByTagName('body')[0].clientWidth;
+                    let y = window.innerHeight || document.documentElement.clientHeight || document
+                        .getElementsByTagName('body')[0].clientHeight;
+
+                    let cmsURL = "{{ route('unisharp.lfm.show') }}" + '?editor=' + meta.fieldname;
+                    if (meta.filetype == 'image') {
+                        cmsURL = cmsURL + "&type=Images";
+                    } else {
+                        cmsURL = cmsURL + "&type=Files";
+                    }
+
+                    tinyMCE.activeEditor.windowManager.openUrl({
+                        url: cmsURL,
+                        title: 'Filemanager',
+                        width: x * 0.8,
+                        height: y * 0.8,
+                        resizable: "yes",
+                        close_previous: "no",
+                        onMessage: (api, message) => {
+                            callback(message.content);
+                        }
+                    });
+                }
+
+            });
+            //select2 tag
+            $('#select_post_tag').select2({
+                theme: 'bootstrap4',
+                language: "{{ app()->getLocale() }}",
+                allowClear: true,
+                ajax: {
+                    url: "{{ route('tags.select') }}",
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data, function(item) {
+                                return {
+                                    text: item.title,
+                                    id: item.id
+                                }
+                            })
+                        };
+                    }
+                }
+            });
+
         })
     </script>
 @endpush

@@ -24,6 +24,17 @@ class TagController extends Controller
         ]);
     }
 
+
+    public function select(Request $request)
+    {
+        $tags = [];
+        if ($request->has('q')) {
+            $tags = Tag::select('id', 'title')->search($request->q)->get();
+        } else {
+            $tags = Tag::select('id', 'title')->limit(5)->get();
+        }
+        return response()->json($tags);
+    }
     /**
      * Show the form for creating a new resource.
      */

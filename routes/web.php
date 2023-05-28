@@ -39,6 +39,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['web', 'auth']], functio
     Route::get('/categories/select', [CategoryController::class, 'select'])->name('categories.select');
     Route::resource('/categories', CategoryController::class);
     //tags
+    Route::get('/tags/select', [TagController::class, 'select'])->name('tags.select');
     Route::resource('/tags', TagController::class)->except(['show']);
     // file manager
     Route::group(['prefix' => 'laravel-filemanager'], function () {
