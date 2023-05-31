@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PostController extends Controller
 {
@@ -46,10 +50,43 @@ class PostController extends Controller
         ], [], $this->attributes());
 
         if ($validator->fails()) {
+            if ($request['tag']) {
+                $request['tag'] = Tag::select('id', 'title')->whereIn('id', $request->tag)->get();
+            }
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
+        // dd($request->all());
+        DB::beginTransaction();
 
-        dd($request->all());
+        try {
+            $post = Post::create([
+                'title' => $request->title,
+                'slug' => $request->slug,
+                'thumbnail' => parse_url($request->thumbnail)['path'],
+                'description' => $request->description,
+                'content' => $request->content,
+                'status' => $request->status,
+                'user_id' => Auth::user()->id
+            ]);
+            $post->tag()->attach($request->tag);
+            $post->categories()->attach($request->category);
+
+            Alert::success(
+                trans('posts.alert.create.title'),
+                trans('posts.alert.create.message.success')
+            );
+
+            return redirect()->route('posts.index');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Alert::error(
+                trans('posts.alert.create.title'),
+                trans('posts.alert.create.message.error', ['error' => $th->getMessage()])
+            );
+            return redirect()->back()->withInput($request->all());
+        } finally {
+            DB::commit();
+        }
     }
 
     /**
