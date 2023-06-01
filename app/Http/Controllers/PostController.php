@@ -94,7 +94,12 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        // dd($post->tag);
+        return view('posts.show', [
+            'post' => $post,
+            'categories' => $post->categories,
+            'tags' => $post->tag
+        ]);
     }
 
     /**
