@@ -107,7 +107,12 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+
+        return view('posts.edit', [
+            'post' => $post,
+            'categories' => Category::with('descendants')->onlyParent()->get(),
+            'statuses' => $this->statuses()
+        ]);
     }
 
     /**
@@ -115,7 +120,56 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:60',
+            'slug' => 'required|string|unique:posts,slug,' . $post->id,
+            'thumbnail' => 'required',
+            'description' => 'required|string|max:240',
+            'content' => 'required',
+            'category' => 'required',
+            'tag' => 'required',
+            'status' => 'required'
+        ], [], $this->attributes());
+
+        if ($validator->fails()) {
+            if ($request['tag']) {
+                $request['tag'] = Tag::select('id', 'title')->whereIn('id', $request->tag)->get();
+            }
+            return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+
+        // dd($request->all());
+        DB::beginTransaction();
+
+        try {
+            $post->update([
+                'title' => $request->title,
+                'slug' => $request->slug,
+                'thumbnail' => parse_url($request->thumbnail)['path'],
+                'description' => $request->description,
+                'content' => $request->content,
+                'status' => $request->status,
+                'user_id' => Auth::user()->id
+            ]);
+            $post->tag()->sync($request->tag);
+            $post->categories()->sync($request->category);
+
+            Alert::success(
+                trans('posts.alert.update.title'),
+                trans('posts.alert.update.message.success')
+            );
+
+            return redirect()->route('posts.index');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Alert::error(
+                trans('posts.alert.update.title'),
+                trans('posts.alert.update.message.error', ['error' => $th->getMessage()])
+            );
+            return redirect()->back()->withInput($request->all());
+        } finally {
+            DB::commit();
+        }
     }
 
     /**

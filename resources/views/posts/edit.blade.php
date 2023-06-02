@@ -1,16 +1,17 @@
 @extends('layouts.dashboard')
 
-@section('title', trans('posts.title.create'))
+@section('title', trans('posts.title.edit'))
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('add_post') }}
+    {{ Breadcrumbs::render('edit_post', $post) }}
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <form action="{{ route('posts.store') }}" method="POST">
+            <form action="{{ route('posts.update', ['post' => $post]) }}" method="POST">
                 @csrf
+                @method('PUT')
                 <div class="card">
                     <div class="card-body">
                         <div class="row d-flex align-items-stretch">
@@ -20,8 +21,8 @@
                                     <label for="input_post_title" class="font-weight-bold">
                                         {{ trans('posts.form_control.input.title.label') }}
                                     </label>
-                                    <input id="input_post_title" value="{{ old('title') }}" name="title" type="text"
-                                        class="form-control @error('title') is-invalid @enderror"
+                                    <input id="input_post_title" value="{{ old('title', $post->title) }}" name="title"
+                                        type="text" class="form-control @error('title') is-invalid @enderror"
                                         placeholder="{{ trans('posts.form_control.input.title.placeholder') }}" />
                                     @error('title')
                                         <span class="invalid-feedback" role="alert">
@@ -34,8 +35,8 @@
                                     <label for="input_post_slug" class="font-weight-bold">
                                         {{ trans('posts.form_control.input.slug.label') }}
                                     </label>
-                                    <input id="input_post_slug" value="{{ old('slug') }}" name="slug" type="text"
-                                        class="form-control @error('slug') is-invalid @enderror "
+                                    <input id="input_post_slug" value="{{ old('slug', $post->slug) }}" name="slug"
+                                        type="text" class="form-control @error('slug') is-invalid @enderror "
                                         placeholder="{{ trans('posts.form_control.input.slug.placeholder') }}" readonly />
                                     @error('slug')
                                         <span class="invalid-feedback" role="alert">
@@ -55,8 +56,9 @@
                                                 {{ trans('posts.button.browse.value') }}
                                             </button>
                                         </div>
-                                        <input id="input_post_thumbnail" name="thumbnail" value="{{ old('thumbnail') }}"
-                                            type="text" class="form-control @error('thumbnail') is-invalid @enderror"
+                                        <input id="input_post_thumbnail" name="thumbnail"
+                                            value="{{ old('thumbnail', asset($post->thumbnail)) }}" type="text"
+                                            class="form-control @error('thumbnail') is-invalid @enderror"
                                             placeholder="{{ trans('posts.form_control.input.thumbnail.placeholder') }}"
                                             readonly />
                                         @error('thumbnail')
@@ -73,7 +75,7 @@
                                     </label>
                                     <textarea id="input_post_description" name="description"
                                         placeholder="{{ trans('posts.form_control.textarea.description.placeholder') }}"
-                                        class="form-control @error('description') is-invalid @enderror" rows="3">{{ old('description') }}</textarea>
+                                        class="form-control @error('description') is-invalid @enderror" rows="3">{{ old('description', $post->description) }}</textarea>
                                     @error('description')
                                         <span class="invalid-feedback" role="alert">
                                             {{ $message }}
@@ -87,7 +89,7 @@
                                     </label>
                                     <textarea id="input_post_content" name="content"
                                         placeholder="{{ trans('posts.form_control.textarea.content.placeholder') }}"
-                                        class="form-control @error('content') is-invalid @enderror " rows="20">{{ old('content') }}</textarea>
+                                        class="form-control @error('content') is-invalid @enderror " rows="20">{{ old('content', $post->content) }}</textarea>
                                     @error('content')
                                         <span class="invalid-feedback" role="alert">
                                             {{ $message }}
@@ -96,7 +98,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <!-- catgeory -->
+                                <!-- category -->
                                 <div class="form-group">
                                     <label for="input_post_description" class="font-weight-bold">
                                         {{ trans('posts.form_control.input.category.label') }}
@@ -106,7 +108,9 @@
                                         <!-- List category -->
                                         @include('posts._category-list', [
                                             'categories' => $categories,
-                                            'categoryChecked' => old('category'),
+                                            'categoryChecked' => old(
+                                                'category',
+                                                $post->categories->pluck('id')->toArray()),
                                         ])
                                         <!-- List category -->
                                     </div>
@@ -128,8 +132,8 @@
                                     <select id="select_post_tag" name="tag[]"
                                         data-placeholder="{{ trans('posts.form_control.select.tag.placeholder') }}"
                                         class="custom-select w-100 @error('tag') is-invalid @enderror" multiple>
-                                        @if (old('tag'))
-                                            @foreach (old('tag') as $tag)
+                                        @if (old('tag', $post->tag))
+                                            @foreach (old('tag', $post->tag) as $tag)
                                                 <option value="{{ $tag->id }}" selected>{{ $tag->title }}
                                                 </option>
                                             @endforeach
@@ -150,7 +154,8 @@
                                         class="custom-select @error('status') is-invalid @enderror">
                                         @foreach ($statuses as $key => $value)
                                             <option value="{{ $key }}"
-                                                {{ old('status') == $key ? 'selected' : null }}>{{ $value }}
+                                                {{ old('status', $post->stasus) == $key ? 'selected' : null }}>
+                                                {{ $value }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -168,7 +173,7 @@
                                     <a class="btn btn-warning px-4"
                                         href="{{ route('posts.index') }}">{{ trans('posts.button.back.value') }}</a>
                                     <button type="submit" class="btn btn-primary px-4">
-                                        {{ trans('posts.button.save.value') }}
+                                        {{ trans('posts.button.edit.value') }}
                                     </button>
                                 </div>
                             </div>
