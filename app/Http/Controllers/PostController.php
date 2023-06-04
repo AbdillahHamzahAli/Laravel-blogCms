@@ -16,10 +16,18 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::all();
-        return view('posts.index', compact('posts'));
+        $statusSelected = in_array($request->get('status'), ['publish', 'draft']) ? $request->get('status') : 'publish';
+        $posts = $statusSelected == 'publish' ? Post::publish() : Post::draft();
+        if ($request->get('keyword')) {
+            $posts->search($request->get('keyword'));
+        }
+        return view('posts.index', [
+            'posts' => $posts->get(),
+            'statuses' => $this->statuses(),
+            'statusSelected' => $statusSelected
+        ]);
     }
 
     /**

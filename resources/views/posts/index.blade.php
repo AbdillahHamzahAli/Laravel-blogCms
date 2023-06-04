@@ -20,8 +20,11 @@
                                             {{ trans('posts.form_control.select.status.label') }}
                                         </label>
                                         <select name="status" class="custom-select">
-                                            <option value="publish" selected>Publish</option>
-                                            <option value="draft">Draft</option>
+                                            @foreach ($statuses as $value => $label)
+                                                <option value="{{ $value }}"
+                                                    {{ $statusSelected == $value ? 'selected' : null }}>{{ $label }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="submit">
@@ -32,7 +35,8 @@
                                 </div>
                                 <div class="col">
                                     <div class="input-group mx-1">
-                                        <input name="keyword" type="search" class="form-control"
+                                        <input name="keyword" value="{{ request()->get('keyword') }}" type="search"
+                                            class="form-control"
                                             placeholder="{{ trans('posts.form_control.input.search.placeholder') }}">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="submit">
@@ -86,9 +90,15 @@
                             </div>
 
                         @empty
-                            <p>
-                                {{ trans('posts.label.no_data.fetch') }}
-                            </p>
+                            @if (request()->get('keyword'))
+                                <p>
+                                    {{ trans('posts.label.no_data.search', ['keyword' => request()->get('keyword')]) }}
+                                </p>
+                            @else
+                                <p>
+                                    {{ trans('posts.label.no_data.fetch') }}
+                                </p>
+                            @endif
                         @endforelse
                     </ul>
                 </div>

@@ -26,4 +26,16 @@ class Post extends Model
     {
         return  $this->belongsToMany(Category::class)->withTimestamps();
     }
+    public function scopePublish($query)
+    {
+        return $query->where('status', 'publish');
+    }
+    public function scopeDraft($query)
+    {
+        return $query->where('status', 'draft');
+    }
+    public function scopeSearch($query, $title)
+    {
+        return $query->where('title', 'LIKE', "%{$title}%");
+    }
 }
