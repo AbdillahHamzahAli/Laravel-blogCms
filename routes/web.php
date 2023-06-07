@@ -8,6 +8,7 @@ use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\FileManagerController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['web', 'auth']], functio
     //tags
     Route::get('/tags/select', [TagController::class, 'select'])->name('tags.select');
     Route::resource('/tags', TagController::class)->except(['show']);
+    //roles
+    // Route::get('/tags/select', [TagController::class, 'select'])->name('tags.select');
+    Route::resource('/roles', RoleController::class);
+
     // file manager
     Route::group(['prefix' => 'laravel-filemanager'], function () {
         Route::get('/index', [FileManagerController::class, 'index'])->name('filemanager.index');

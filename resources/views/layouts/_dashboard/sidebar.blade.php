@@ -24,7 +24,7 @@
                 </div>
                 {{ trans('dashboard.link.categories') }}
             </a>
-            <a class="nav-link {{ set_active(['tags.index', 'tags.create', 'tags.edit', 'tags.show']) }} "
+            <a class="nav-link {{ set_active(['tags.create', 'tags.edit', 'tags.show']) }} "
                 href="{{ route('tags.index') }}">
                 <div class="sb-nav-link-icon">
                     <i class="fas fa-tags"></i>
@@ -39,7 +39,7 @@
                 </div>
                 {{ trans('dashboard.link.users') }}
             </a>
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('roles.index') }}">
                 <div class="sb-nav-link-icon">
                     <i class="fas fa-user-shield"></i>
                 </div>

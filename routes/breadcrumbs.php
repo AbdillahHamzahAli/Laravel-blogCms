@@ -94,3 +94,8 @@ Breadcrumbs::for('file_manager', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('File Manager', route('filemanager.index'));
 });
+// Dashboard > FileManager
+Breadcrumbs::for('roles', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Roles', route('roles.index'));
+});
