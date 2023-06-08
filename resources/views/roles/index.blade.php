@@ -27,7 +27,7 @@
                             </form>
                         </div>
                         <div class="col-md-6">
-                            <a href="#" class="btn btn-primary float-right" role="button">
+                            <a href="{{ route('roles.create') }}" class="btn btn-primary float-right" role="button">
                                 {{ trans('roles.button.create.value') }}
                                 <i class="fas fa-plus-square"></i>
                             </a>
@@ -44,6 +44,11 @@
                                     {{ $role->name }}
                                 </label>
                                 <div>
+                                    <!-- detail -->
+                                    <a href="{{ route('roles.show', ['role' => $role]) }}" class="btn btn-sm btn-primary"
+                                        role="button">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                     <!-- edit -->
                                     <a class="btn btn-sm btn-info" role="button">
                                         <i class="fas fa-edit"></i>

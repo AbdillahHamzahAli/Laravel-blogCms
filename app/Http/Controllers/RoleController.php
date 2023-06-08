@@ -23,7 +23,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view('roles.create', [
+            'authorities' => config('permission.authorities')
+        ]);
     }
 
     /**
@@ -39,7 +41,11 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        //
+        return view('roles.show', [
+            'role' => $role,
+            'authorities' => config('permission.authorities'),
+            'rolePermission' => $role->permissions->pluck('name')->toArray()
+        ]);
     }
 
     /**
