@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 // use App\Models\Role;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class RoleController extends Controller
 {
@@ -33,7 +34,22 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|string|max:50|unique:roles,name',
+                'permissions' => "required",
+
+            ],
+            [],
+            $this->attributes()
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+
+        dd($request->all());
     }
 
     /**
@@ -70,5 +86,13 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         //
+    }
+
+    private function attributes()
+    {
+        return [
+            'name' => trans('roles.form_control.input.name.attribute'),
+            'permissions' => trans('roles.form_control.input.permission.attribute')
+        ];
     }
 }
