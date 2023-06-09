@@ -83,7 +83,7 @@ Breadcrumbs::for('detail_post', function (BreadcrumbTrail $trail, $post) {
     $trail->push('Detail', route('posts.show', ['post' => $post]));
     $trail->push($post->title, route('posts.show', ['post' => $post]));
 });
-// Dashboard > Posts > Add > Edit > [Title]
+// Dashboard > Posts > Edit > [Title]
 Breadcrumbs::for('edit_post', function (BreadcrumbTrail $trail, $post) {
     $trail->parent('posts');
     $trail->push('Edit', route('posts.edit', ['post' => $post]));
@@ -105,8 +105,14 @@ Breadcrumbs::for('add_role', function (BreadcrumbTrail $trail) {
     $trail->push('Add', route('roles.create'));
 });
 // Dashboard > Role > Detail > [Title]
+Breadcrumbs::for('edit_role', function (BreadcrumbTrail $trail, $role) {
+    $trail->parent('roles');
+    $trail->push('Edit', route('roles.show', ['role' => $role]));
+    $trail->push($role->name, route('roles.show', ['role' => $role]));
+});
+// Dashboard > Role > Detail > [Title]
 Breadcrumbs::for('detail_role', function (BreadcrumbTrail $trail, $role) {
     $trail->parent('roles');
-    $trail->push('Detail', route('roles.show', ['role' => $role]));
-    $trail->push($role->name, route('roles.show', ['role' => $role]));
+    $trail->push('Detail', route('roles.edit', ['role' => $role]));
+    $trail->push($role->name, route('roles.edit', ['role' => $role]));
 });

@@ -50,15 +50,20 @@
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     <!-- edit -->
-                                    <a class="btn btn-sm btn-info" role="button">
+                                    <a href="{{ route('roles.edit', ['role' => $role]) }}" class="btn btn-sm btn-info"
+                                        role="button">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <!-- delete -->
-                                    <form class="d-inline" action="" method="POST">
+                                    <form class="d-inline" role="alert"
+                                        alert-text="{{ trans('roles.alert.delete.message.confirm', ['name' => $role->name]) }}"
+                                        action="{{ route('roles.destroy', ['role' => $role]) }}"method="POST">
+                                        @csrf @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
+
                                 </div>
                             </li>
                         @empty
@@ -75,3 +80,26 @@
     </div>
 
 @endsection
+
+@push('javascript-internal')
+    <script>
+        $(document).ready(function() {
+            // Delete Tag
+            $("form[role='alert']").submit(function(event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: "{{ trans('roles.alert.delete.title') }}",
+                    text: $(this).attr('alert-text'),
+                    allowOutsideClick: false,
+                    showCancelButton: true,
+                    cancelButtonText: "{{ trans('roles.button.cancel.value') }}",
+                    reverseButtons: true,
+                    confirmButtonText: "{{ trans('roles.button.delete.value') }}",
+                }).then((result) => {
+                    if (result.dismiss == 'cancel') return;
+                    event.target.submit();
+                });
+            })
+        })
+    </script>
+@endpush

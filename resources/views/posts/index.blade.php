@@ -127,10 +127,8 @@
                     reverseButtons: true,
                     confirmButtonText: "{{ trans('posts.button.delete.value') }}",
                 }).then((result) => {
-                    if (result) {
-                        // todo: process of deleting categories
-                        event.target.submit();
-                    }
+                    if (result.dismiss == 'cancel') return;
+                    event.target.submit();
                 });
             })
         })
