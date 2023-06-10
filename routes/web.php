@@ -45,6 +45,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['web', 'auth']], functio
     Route::get('/tags/select', [TagController::class, 'select'])->name('tags.select');
     Route::resource('/tags', TagController::class)->except(['show']);
     //roles
+    Route::get('/roles/select', [RoleController::class, 'select'])->name('roles.select');
     Route::resource('/roles', RoleController::class);
     //user
     Route::resource('/users', UserController::class);

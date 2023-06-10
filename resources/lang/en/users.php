@@ -69,6 +69,9 @@ return [
         'cancel' => [
             'value' => 'Cancel'
         ],
+        'back' => [
+            'value' => 'Back'
+        ]
     ],
     'alert' => [
         'create' => [
