@@ -14,9 +14,10 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-6">
-                            <form action="" method="GET">
+                            <form action="{{ route('roles.index') }}" method="GET">
                                 <div class="input-group">
-                                    <input name="keyword" type="search" class="form-control"
+                                    <input name="keyword" value="{{ request()->get('keyword') }}" type="search"
+                                        class="form-control"
                                         placeholder="{{ trans('roles.form_control.input.search.placeholder') }}">
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" type="submit">
@@ -67,14 +68,24 @@
                                 </div>
                             </li>
                         @empty
+
                             <p>
-                                {{ trans('roles.label.no_data.fetch') }}
+                                @if (request()->get('keyword'))
+                                    {{ trans('roles.label.no_data.search', ['keyword' => request()->get('keyword')]) }}
+                                @else
+                                    {{ trans('roles.label.no_data.fetch') }}
+                                @endif
                             </p>
                         @endforelse
 
                         <!-- list role -->
                     </ul>
                 </div>
+                @if ($roles->hasPages())
+                    <div class="card-footer">
+                        {{ $roles->links('vendor.pagination.bootstrap-5') }}
+                    </div>
+                @endif
             </div>
         </div>
     </div>

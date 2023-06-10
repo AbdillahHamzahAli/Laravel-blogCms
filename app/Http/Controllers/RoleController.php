@@ -11,13 +11,17 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class RoleController extends Controller
 {
+    private $perPage = 5;
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $roles = $request->has('keyword')
+            ? Role::where('name', 'LIKE', "%{$request->keyword}%")->paginate($this->perPage)
+            : Role::paginate($this->perPage);
         return view('roles.index', [
-            'roles' => Role::all()
+            'roles' => $roles->appends(['keyword' => $request->keyword])
         ]);
     }
 
