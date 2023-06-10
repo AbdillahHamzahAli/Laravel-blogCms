@@ -116,3 +116,8 @@ Breadcrumbs::for('detail_role', function (BreadcrumbTrail $trail, $role) {
     $trail->push('Detail', route('roles.edit', ['role' => $role]));
     $trail->push($role->name, route('roles.edit', ['role' => $role]));
 });
+// Dashboard > Users
+Breadcrumbs::for('users', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('User', route('users.index'));
+});

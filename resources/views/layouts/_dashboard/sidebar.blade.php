@@ -33,7 +33,8 @@
             </a>
             {{-- MENU USER PERMISSION --}}
             <div class="sb-sidenav-menu-heading">{{ trans('dashboard.menu.user_permission') }}</div>
-            <a class="nav-link" href="#">
+            <a class="nav-link {{ set_active(['users.create', 'users.edit', 'users.show']) }}"
+                href="{{ route('users.index') }}">
                 <div class="sb-nav-link-icon">
                     <i class="fas fa-user"></i>
                 </div>
