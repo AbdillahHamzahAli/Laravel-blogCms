@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -31,7 +36,47 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|string|max:30',
+                'role' => 'required',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|min:6|confirmed'
+            ],
+            [],
+            $this->attributes()
+        );
+
+        if ($validator->fails()) {
+            $request['role'] = Role::select('id', 'name')->find($request->role);
+            return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
+            $user->assignRole($request->role);
+            Alert::success(
+                trans('users.alert.create.title'),
+                trans('users.alert.create.message.success'),
+            );
+            return redirect()->route('users.index');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Alert::error(
+                trans('users.alert.create.title'),
+                trans('users.alert.create.message.error', ['error' => $th->getMessage()]),
+            );
+            $request['role'] = Role::select('id', 'name')->find($request->role);
+            return redirect()->back()->withInput($request->all());
+        } finally {
+            DB::commit();
+        }
     }
 
     /**
@@ -64,5 +109,14 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+    private function attributes()
+    {
+        return [
+            "name" => trans('users.form_control.input.name.attribute'),
+            "role" => trans('users.form_control.select.role.attribute'),
+            "email" => trans('users.form_control.input.email.attribute'),
+            "password" => trans('users.form_control.input.password.attribute'),
+        ];
     }
 }
