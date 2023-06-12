@@ -92,7 +92,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('users.edit', [
+            'user' => $user,
+            'roleSelected' => $user->roles->first()
+        ]);
     }
 
     /**
@@ -100,7 +103,39 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'role' => 'required',
+
+            ],
+            [],
+            $this->attributes()
+        );
+
+        if ($validator->fails()) {
+            $request['role'] = Role::select('id', 'name')->find($request->role);
+            return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+        DB::beginTransaction();
+        try {
+            $user->syncRoles($request->role);
+            Alert::success(
+                trans('users.alert.update.title'),
+                trans('users.alert.update.message.success'),
+            );
+            return redirect()->route('users.index');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Alert::error(
+                trans('users.alert.update.title'),
+                trans('users.alert.update.message.error', ['error' => $th->getMessage()]),
+            );
+            $request['role'] = Role::select('id', 'name')->find($request->role);
+            return redirect()->back()->withInput($request->all());
+        } finally {
+            DB::commit();
+        }
     }
 
     /**
