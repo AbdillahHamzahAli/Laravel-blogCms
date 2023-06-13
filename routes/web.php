@@ -48,7 +48,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['web', 'auth']], functio
     Route::get('/roles/select', [RoleController::class, 'select'])->name('roles.select');
     Route::resource('/roles', RoleController::class);
     //user
-    Route::resource('/users', UserController::class);
+    Route::resource('/users', UserController::class)->except(['show']);
 
     // file manager
     Route::group(['prefix' => 'laravel-filemanager'], function () {

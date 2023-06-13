@@ -12,14 +12,18 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    private $perPage = 6;
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $users = $request->get('keyword')
+            ? User::search($request->get('keyword'))->paginate($this->perPage)
+            : User::paginate($this->perPage);
 
         return view('users.index', [
-            'users' => User::all()
+            'users' => $users->appends('keyword', $request->get('keyword'))
         ]);
     }
 
@@ -143,7 +147,25 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        // dd($user->roles());
+        DB::beginTransaction();
+        try {
+            $user->removeRole($user->roles->first());
+            $user->delete();
+            Alert::success(
+                trans('users.alert.delete.title'),
+                trans('users.alert.delete.message.success'),
+            );
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Alert::error(
+                trans('users.alert.delete.title'),
+                trans('users.alert.delete.message.error', ['error' => $th->getMessage()]),
+            );
+        } finally {
+            DB::commit();
+        }
+        return redirect()->back();
     }
     private function attributes()
     {

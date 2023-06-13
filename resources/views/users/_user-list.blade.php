@@ -47,7 +47,10 @@
                         <i class="fas fa-edit"></i>
                     </a>
                     <!-- delete -->
-                    <form action="" method="POST" role="alert" class="d-inline">
+                    <form class="d-inline" role="alert"
+                        alert-text="{{ trans('users.alert.delete.message.confirm', ['name' => $user->name]) }}"
+                        action="{{ route('users.destroy', ['user' => $user]) }}"method="POST">
+                        @csrf @method('DELETE')
                         <button type="submit" class="btn btn-sm btn-danger">
                             <i class="fas fa-trash"></i>
                         </button>
@@ -58,6 +61,10 @@
     </div>
 @empty
     <p>
-        {{ trans('users.label.no_data.fetch') }}
+        @if (request()->get('keyword'))
+            {{ trans('users.label.no_data.search', ['keyword' => request()->get('keyword')]) }}
+        @else
+            {{ trans('users.label.no_data.fetch') }}
+        @endif
     </p>
 @endforelse

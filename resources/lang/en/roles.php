@@ -32,7 +32,7 @@ return [
         'no_data' => [
             'fetch' => "Roles Not Yet Available!",
             'search' => ":keyword role not found",
-            ]
+        ]
     ],
     'button' => [
         'create' => [
@@ -74,7 +74,8 @@ return [
             'message' => [
                 'confirm' => "Are you sure you want to delete the :name role?",
                 'success' => "Category deleted successfully.",
-                'error' => "An error occurred while deleting the role. :error"
+                'error' => "An error occurred while deleting the role. :error",
+                'warning' => "Sorry, the :name role cannot be deleted. Because it's still in use.",
             ]
         ],
     ]

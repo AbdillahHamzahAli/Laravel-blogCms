@@ -13,9 +13,10 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-6">
-                            <form action="" method="GET">
+                            <form action="{{ route('users.index') }}" method="GET">
                                 <div class="input-group">
-                                    <input name="keyword" value="" type="search" class="form-control"
+                                    <input name="keyword" value="{{ request()->get('keyword') }}" type="search"
+                                        class="form-control"
                                         placeholder="{{ trans('users.form_control.input.search.placeholder') }}">
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" type="submit">
@@ -41,8 +42,36 @@
                 </div>
                 <div class="card-footer">
                     <!-- Todo:paginate -->
+                    @if ($users->hasPages())
+                        <div class="card-footer">
+                            {{ $users->links('vendor.pagination.bootstrap-5') }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
+@push('javascript-internal')
+    <script>
+        $(document).ready(function() {
+            // Delete Tag
+            $("form[role='alert']").submit(function(event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: "{{ trans('users.alert.delete.title') }}",
+                    text: $(this).attr('alert-text'),
+                    allowOutsideClick: false,
+                    showCancelButton: true,
+                    cancelButtonText: "{{ trans('users.button.cancel.value') }}",
+                    reverseButtons: true,
+                    confirmButtonText: "{{ trans('users.button.delete.value') }}",
+                }).then((result) => {
+                    if (result.dismiss == 'cancel') return;
+                    event.target.submit();
+                });
+            })
+        })
+    </script>
+@endpush
