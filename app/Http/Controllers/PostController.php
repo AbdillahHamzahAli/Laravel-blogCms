@@ -13,6 +13,21 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        // 'manage_posts' => [
+        //     'post_show',
+        //     'post_create',
+        //     'post_update',
+        //     'post_detail',
+        //     'post_delete'
+        // ],
+        $this->middleware('permission:post_show', ['only' => 'index']);
+        $this->middleware('permission:post_create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:post_update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:post_detail', ['only' => 'show']);
+        $this->middleware('permission:post_delete', ['only' => 'destroy']);
+    }
     /**
      * Display a listing of the resource.
      */
