@@ -5,27 +5,33 @@
             {{ str_repeat('-', $count) . ' ' . $category->title }}
         </label>
         <div>
-            <!-- detail -->
-            <a href="{{ route('categories.show', ['category' => $category]) }}" class="btn btn-sm btn-primary"
-                role="button">
-                <i class="fas fa-eye"></i>
-            </a>
-            <!-- edit -->
-            <a href="{{ route('categories.edit', ['category' => $category]) }}" class="btn btn-sm btn-info" role="button">
-                <i class="fas fa-edit"></i>
-            </a>
-            <!-- delete -->
-            <form class="d-inline" action="{{ route('categories.destroy', ['category' => $category]) }}" role="alert"
-                method="POST" alert-title="{{ trans('categories.alert.delete.title') }}"
-                alert-text="{{ trans('categories.alert.delete.message.confirm', ['title' => $category->title]) }}"
-                alert-btn-cancel="{{ trans('categories.button.cancel.value') }}"
-                alert-btn-yes="{{ trans('categories.button.delete.value') }}">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-danger">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </form>
+            @can('category_detail')
+                <!-- detail -->
+                <a href="{{ route('categories.show', ['category' => $category]) }}" class="btn btn-sm btn-primary"
+                    role="button">
+                    <i class="fas fa-eye"></i>
+                </a>
+            @endcan
+            @can('category_update')
+                <!-- edit -->
+                <a href="{{ route('categories.edit', ['category' => $category]) }}" class="btn btn-sm btn-info" role="button">
+                    <i class="fas fa-edit"></i>
+                </a>
+            @endcan
+            @can('category_delete')
+                <!-- delete -->
+                <form class="d-inline" action="{{ route('categories.destroy', ['category' => $category]) }}" role="alert"
+                    method="POST" alert-title="{{ trans('categories.alert.delete.title') }}"
+                    alert-text="{{ trans('categories.alert.delete.message.confirm', ['title' => $category->title]) }}"
+                    alert-btn-cancel="{{ trans('categories.button.cancel.value') }}"
+                    alert-btn-yes="{{ trans('categories.button.delete.value') }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+            @endcan
         </div>
         <!-- todo:show subcategory -->
         @if ($category->descendants && !trim(request()->get('keyword')))

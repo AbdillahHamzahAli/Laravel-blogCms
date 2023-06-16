@@ -19,20 +19,26 @@
                     {{ trans('dashboard.link.posts') }}
                 </a>
             @endcan
-            <a class="nav-link {{ set_active(['categories.index', 'categories.create', 'categories.edit', 'categories.show']) }} "
-                href="{{ route('categories.index') }}">
-                <div class="sb-nav-link-icon">
-                    <i class="fas fa-bookmark"></i>
-                </div>
-                {{ trans('dashboard.link.categories') }}
-            </a>
-            <a class="nav-link {{ set_active(['tags.create', 'tags.edit', 'tags.show']) }} "
-                href="{{ route('tags.index') }}">
-                <div class="sb-nav-link-icon">
-                    <i class="fas fa-tags"></i>
-                </div>
-                {{ trans('dashboard.link.tags') }}
-            </a>
+            {{-- CATEGORIES --}}
+            @can('manage_categories')
+                <a class="nav-link {{ set_active(['categories.index', 'categories.create', 'categories.edit', 'categories.show']) }} "
+                    href="{{ route('categories.index') }}">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-bookmark"></i>
+                    </div>
+                    {{ trans('dashboard.link.categories') }}
+                </a>
+            @endcan
+            {{-- TAGS --}}
+            @can('manage_tags')
+                <a class="nav-link {{ set_active(['tags.create', 'tags.edit', 'tags.show']) }} "
+                    href="{{ route('tags.index') }}">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    {{ trans('dashboard.link.tags') }}
+                </a>
+            @endcan
             {{-- MENU USER PERMISSION --}}
             <div class="sb-sidenav-menu-heading">{{ trans('dashboard.menu.user_permission') }}</div>
             <a class="nav-link {{ set_active(['users.create', 'users.edit', 'users.show']) }}"

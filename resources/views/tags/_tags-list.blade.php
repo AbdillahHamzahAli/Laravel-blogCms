@@ -6,19 +6,23 @@
             {{ $tag->title }}
         </label>
         <div>
-            <!-- edit -->
-            <a class="btn btn-sm btn-info" href="{{ route('tags.edit', ['tag' => $tag]) }}" role="button">
-                <i class="fas fa-edit"></i>
-            </a>
-            <!-- delete -->
-            <form class="d-inline" role="alert"
-                alert-text="{{ trans('tags.alert.delete.message.confirm', ['title' => $tag->title]) }}"
-                action="{{ route('tags.destroy', ['tag' => $tag]) }}"method="POST">
-                @csrf @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-danger">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </form>
+            @can('tag_update')
+                <!-- edit -->
+                <a class="btn btn-sm btn-info" href="{{ route('tags.edit', ['tag' => $tag]) }}" role="button">
+                    <i class="fas fa-edit"></i>
+                </a>
+            @endcan
+            @can('tag_delete')
+                <!-- delete -->
+                <form class="d-inline" role="alert"
+                    alert-text="{{ trans('tags.alert.delete.message.confirm', ['title' => $tag->title]) }}"
+                    action="{{ route('tags.destroy', ['tag' => $tag]) }}"method="POST">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+            @endcan
         </div>
     </li>
     <!-- end  tag list -->
