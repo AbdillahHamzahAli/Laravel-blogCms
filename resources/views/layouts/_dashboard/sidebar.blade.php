@@ -41,20 +41,26 @@
             @endcan
             {{-- MENU USER PERMISSION --}}
             <div class="sb-sidenav-menu-heading">{{ trans('dashboard.menu.user_permission') }}</div>
-            <a class="nav-link {{ set_active(['users.create', 'users.edit', 'users.show']) }}"
-                href="{{ route('users.index') }}">
-                <div class="sb-nav-link-icon">
-                    <i class="fas fa-user"></i>
-                </div>
-                {{ trans('dashboard.link.users') }}
-            </a>
-            <a class="nav-link {{ set_active(['roles.create', 'roles.edit', 'roles.show']) }}"
-                href="{{ route('roles.index') }} ">
-                <div class="sb-nav-link-icon">
-                    <i class="fas fa-user-shield"></i>
-                </div>
-                {{ trans('dashboard.link.roles') }}
-            </a>
+            {{-- USERS --}}
+            @can('manage_users')
+                <a class="nav-link {{ set_active(['users.create', 'users.edit', 'users.show']) }}"
+                    href="{{ route('users.index') }}">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    {{ trans('dashboard.link.users') }}
+                </a>
+            @endcan
+            {{-- ROLES --}}
+            @can('manage_roles')
+                <a class="nav-link {{ set_active(['roles.create', 'roles.edit', 'roles.show']) }}"
+                    href="{{ route('roles.index') }} ">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    {{ trans('dashboard.link.roles') }}
+                </a>
+            @endcan
             {{-- MENU SETTING --}}
             <div class="sb-sidenav-menu-heading">{{ trans('dashboard.menu.setting') }}</div>
             <a class="nav-link" href="{{ route('filemanager.index') }}">

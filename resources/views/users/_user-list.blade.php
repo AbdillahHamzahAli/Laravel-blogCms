@@ -6,7 +6,7 @@
                     <div class="col-md-2">
                         <i class="fas fa-id-badge fa-5x"></i>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-10 ">
                         <table>
                             <tr>
                                 <th>
@@ -42,19 +42,23 @@
                     </div>
                 </div>
                 <div class="float-right">
-                    <!-- edit -->
-                    <a href="{{ route('users.edit', ['user' => $user]) }}" class="btn btn-sm btn-info" role="button">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <!-- delete -->
-                    <form class="d-inline" role="alert"
-                        alert-text="{{ trans('users.alert.delete.message.confirm', ['name' => $user->name]) }}"
-                        action="{{ route('users.destroy', ['user' => $user]) }}"method="POST">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
+                    @can('user_update', $user)
+                        <!-- edit -->
+                        <a href="{{ route('users.edit', ['user' => $user]) }}" class="btn btn-sm btn-info" role="button">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    @endcan
+                    @can('user_delete', $user)
+                        <!-- delete -->
+                        <form class="d-inline" role="alert"
+                            alert-text="{{ trans('users.alert.delete.message.confirm', ['name' => $user->name]) }}"
+                            action="{{ route('users.destroy', ['user' => $user]) }}"method="POST">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    @endcan
                 </div>
             </div>
         </div>

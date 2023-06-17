@@ -12,6 +12,13 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:user_show', ['only' => 'index']);
+        $this->middleware('permission:user_create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:user_update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:user_delete', ['only' => 'destroy']);
+    }
     private $perPage = 6;
     /**
      * Display a listing of the resource.
