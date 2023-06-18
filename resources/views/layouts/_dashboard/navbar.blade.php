@@ -1,5 +1,5 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="{{ route('blog.home') }}">
         <!-- show app name -->
         {{ config('app.name') }}
     </a>
