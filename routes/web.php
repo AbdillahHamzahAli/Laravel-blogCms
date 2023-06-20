@@ -25,6 +25,7 @@ use App\Http\Controllers\UserController;
 Route::get('/localization/{language}', [LocalizationController::class, 'switch'])->name('localization.switch');
 
 Route::get('/', [BlogController::class, 'home'])->name('blog.home');
+Route::get('/categories', [BlogController::class, 'showCategories'])->name('blog.categories');
 
 Auth::routes([
     'register' => false

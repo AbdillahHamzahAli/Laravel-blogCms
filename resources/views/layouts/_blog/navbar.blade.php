@@ -28,7 +28,7 @@
                 <!-- nav-home:end -->
                 <!-- nav-categories:start -->
                 <li class="nav-item">
-                    <a class="nav-link" href="">
+                    <a class="nav-link" href="{{ route('blog.categories') }}">
                         {{ trans('blog.menu.categories') }}
                     </a>
                 </li>

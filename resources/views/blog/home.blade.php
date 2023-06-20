@@ -23,9 +23,10 @@
                             <div class="col-lg-6">
                                 <!-- thumbnail:start -->
                                 @if (file_exists(public_path($post->thumbnail)))
-                                    <img class="card-img-top" src="{{ asset($post->thumbnail) }}" alt="Title">
+                                    <img class="card-img-top" src="{{ asset($post->thumbnail) }}" alt="{{ $post->title }}">
                                 @else
-                                    <img class="img-fluid rounded" src="http://placehold.it/750x300" alt="Title">
+                                    <img class="img-fluid rounded" src="http://placehold.it/750x300"
+                                        alt="{{ $post->title }}">
                                 @endif
 
                                 <!-- thumbnail:end -->
