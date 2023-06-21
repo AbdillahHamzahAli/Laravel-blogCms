@@ -9,20 +9,31 @@ use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 //==================BLOG=================//
-// Dashboard
+// Blog
 Breadcrumbs::for('blog', function (BreadcrumbTrail $trail) {
     $trail->push('Blog', route('blog.home'));
 });
 
-// Dashboard > Home
+// Blog > Home
 Breadcrumbs::for('blog_home', function (BreadcrumbTrail $trail) {
     $trail->parent('blog');
     $trail->push('Home', '#');
 });
-// Dashboard > Categories
+// Blog > Categories
 Breadcrumbs::for('blog_categories', function (BreadcrumbTrail $trail) {
     $trail->parent('blog');
-    $trail->push('Categories', '#');
+    $trail->push('Categories', route('blog.categories'));
+});
+// Blog > Tags
+Breadcrumbs::for('blog_tags', function (BreadcrumbTrail $trail) {
+    $trail->parent('blog');
+    $trail->push('Tags', route('blog.tags'));
+});
+// Blog > Tags
+Breadcrumbs::for('blog_search', function (BreadcrumbTrail $trail, $keyword) {
+    $trail->parent('blog');
+    $trail->push('Search', route('blog.search'));
+    $trail->push($keyword, route('blog.search'));
 });
 //==================DASHBOARD=================//
 // Dashboard

@@ -26,6 +26,8 @@ Route::get('/localization/{language}', [LocalizationController::class, 'switch']
 
 Route::get('/', [BlogController::class, 'home'])->name('blog.home');
 Route::get('/categories', [BlogController::class, 'showCategories'])->name('blog.categories');
+Route::get('/tags', [BlogController::class, 'showTags'])->name('blog.tags');
+Route::get('/search', [BlogController::class, 'searchPosts'])->name('blog.search');
 
 Auth::routes([
     'register' => false

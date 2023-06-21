@@ -8,8 +8,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <!-- Search for post:start -->
-            <form class="input-group my-1" action="" method="GET">
-                <input name="keyword" value="" type="search" class="form-control"
+            <form class="input-group my-1" action="{{ route('blog.search') }}" method="GET">
+                <input name="keyword" value="{{ request()->get('keyword') }}" type="search" class="form-control"
                     placeholder="{{ trans('blog.form_control.input.search.placeholder') }}">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="submit">
@@ -34,7 +34,7 @@
                 </li>
                 <!-- nav-categories:tags -->
                 <li class="nav-item">
-                    <a class="nav-link" href="">
+                    <a class="nav-link" href="{{ route('blog.tags') }}">
                         {{ trans('blog.menu.tags') }}
                     </a>
                 </li>
