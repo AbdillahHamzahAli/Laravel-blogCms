@@ -35,7 +35,7 @@
                                 <h2 class="card-title">{{ $post->title }}</h2>
                                 <p class="card-text">{{ $post->description }}</p>
                                 <a href="" class="btn btn-primary">
-                                    Readmore
+                                    {{ trans('blog.button.read_more.value') }}
                                 </a>
                             </div>
                         </div>

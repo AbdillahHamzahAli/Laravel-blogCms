@@ -27,9 +27,12 @@ class Category extends Model
     {
         return $this->hasMany(self::class, 'parent_id');
     }
-
     public function descendants()
     {
         return $this->children()->with('descendants');
+    }
+    public function root()
+    {
+        return $this->parent ? $this->parent->root() : $this;
     }
 }

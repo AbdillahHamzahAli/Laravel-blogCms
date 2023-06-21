@@ -40,4 +40,19 @@ class BlogController extends Controller
                 ->appends(['keyword' => $request->keyword])
         ]);
     }
+    public function showPostsByCategory($slug)
+    {
+        $posts = Post::publish()->whereHas('categories', function ($query) use ($slug) {
+            return $query->where('slug', $slug);
+        })->paginate($this->perPages);
+
+        $category = Category::where('slug', $slug)->first();
+        $categoryRoot = $category->root();
+        // dd($categoryRoot);
+        return view('blog.posts-category', [
+            'posts' => $posts,
+            'category' => $category,
+            'categoryRoot' => $categoryRoot
+        ]);
+    }
 }
