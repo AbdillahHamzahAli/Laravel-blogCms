@@ -48,11 +48,26 @@ class BlogController extends Controller
 
         $category = Category::where('slug', $slug)->first();
         $categoryRoot = $category->root();
-        // dd($categoryRoot);
+
         return view('blog.posts-category', [
             'posts' => $posts,
             'category' => $category,
             'categoryRoot' => $categoryRoot
+        ]);
+    }
+    public function showPostsByTag($slug)
+    {
+        $posts = Post::publish()->whereHas('tag', function ($query) use ($slug) {
+            return $query->where('slug', $slug);
+        })->paginate($this->perPages);
+
+        $tag = Tag::where('slug', $slug)->first();
+        $tags = Tag::search($tag->title)->get();
+
+        return view('blog.posts-tag', [
+            'posts' => $posts,
+            'tag' => $tag,
+            'tags' => $tags
         ]);
     }
 }

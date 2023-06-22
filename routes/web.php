@@ -28,6 +28,7 @@ Route::get('/', [BlogController::class, 'home'])->name('blog.home');
 Route::get('/categories', [BlogController::class, 'showCategories'])->name('blog.categories');
 Route::get('/categories/{slug}', [BlogController::class, 'showPostsByCategory'])->name('blog.posts.category');
 Route::get('/tags', [BlogController::class, 'showTags'])->name('blog.tags');
+Route::get('/tags/{slug}', [BlogController::class, 'showPostsByTag'])->name('blog.posts.tag');
 Route::get('/search', [BlogController::class, 'searchPosts'])->name('blog.search');
 
 Auth::routes([

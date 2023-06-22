@@ -50,7 +50,7 @@
             <!-- Categories list:start -->
             <div class="card mb-1">
                 <h5 class="card-header">
-                    Categories
+                    {{ trans('blog.widget.categories') }}
                 </h5>
                 <div class="card-body">
                     <ul class="list-unstyled">
