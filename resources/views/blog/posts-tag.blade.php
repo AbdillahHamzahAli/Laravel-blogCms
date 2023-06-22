@@ -32,7 +32,7 @@
                             <div class="col-lg-6">
                                 <h2 class="card-title">{{ $post->title }}</h2>
                                 <p class="card-text">{{ $post->descrption }}</p>
-                                <a href="" class="btn btn-primary">
+                                <a href="{{ route('blog.post.detail', ['slug' => $post->slug]) }}" class="btn btn-primary">
                                     {{ trans('blog.button.read_more.value') }}
                                 </a>
                             </div>

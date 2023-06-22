@@ -25,6 +25,7 @@ use App\Http\Controllers\UserController;
 Route::get('/localization/{language}', [LocalizationController::class, 'switch'])->name('localization.switch');
 
 Route::get('/', [BlogController::class, 'home'])->name('blog.home');
+Route::get('/post/{slug}', [BlogController::class, 'showPostDetail'])->name('blog.post.detail');
 Route::get('/categories', [BlogController::class, 'showCategories'])->name('blog.categories');
 Route::get('/categories/{slug}', [BlogController::class, 'showPostsByCategory'])->name('blog.posts.category');
 Route::get('/tags', [BlogController::class, 'showTags'])->name('blog.tags');

@@ -70,4 +70,15 @@ class BlogController extends Controller
             'tags' => $tags
         ]);
     }
+    public function showPostDetail($slug)
+    {
+        $post = Post::with(['categories', 'tag'])->where('slug', $slug)->first();
+        if (!$post) {
+            return redirect()->route('blog.home');
+        }
+        // dd($post);
+        return view('blog.post-detail', [
+            'post' => $post
+        ]);
+    }
 }
