@@ -12,7 +12,7 @@
                 <input name="keyword" value="{{ request()->get('keyword') }}" type="search" class="form-control"
                     placeholder="{{ trans('blog.form_control.input.search.placeholder') }}">
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="submit">
+                    <button class="btn btn-outline-secondary " type="submit">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>

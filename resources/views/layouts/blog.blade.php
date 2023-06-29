@@ -17,7 +17,7 @@
     <script src="{{ asset('vendor/fontawesome-free/js/all.min.js') }}"></script>
     <!-- icon flag -->
     <link rel="stylesheet" href="{{ asset('vendor/flag-icon-css/css/flag-icon.min.css') }}">
-
+    @stack('css-internal')
 </head>
 
 <body class="d-flex flex-column min-vh-100">
