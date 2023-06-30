@@ -18,12 +18,13 @@
     <!-- icon flag -->
     <link rel="stylesheet" href="{{ asset('vendor/flag-icon-css/css/flag-icon.min.css') }}">
     @stack('css-internal')
+
 </head>
 
-<body class="d-flex flex-column min-vh-100">
+<body class="p-0 d-flex flex-column min-vh-100">
 
     <!-- Navigation:start -->
-    @include('layouts._blog.navbar')
+    @include('layouts._blog._navbar')
     <!-- Navigation:end -->
 
     <!-- Page Content -->
