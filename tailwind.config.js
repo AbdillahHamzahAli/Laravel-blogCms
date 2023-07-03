@@ -6,7 +6,12 @@ module.exports = {
         "./resources/views/layouts/newblog.blade.php",
     ],
     theme: {
-        extend: {},
+        extend: {
+            container: {
+                center: true,
+                padding: "16px",
+            },
+        },
     },
     plugins: [],
 };

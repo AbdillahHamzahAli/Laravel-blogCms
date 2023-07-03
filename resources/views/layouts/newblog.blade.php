@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="{{ asset('vendor/flag-icon-css/css/flag-icon.min.css') }}">
 </head>
 
-<body>
+<body class="min-h-screen flex flex-col">
     @include('layouts._newblog.navbar')
-    <div class="container">
+    <div class="pt-36 flex-grow">
         @yield('content')
     </div>
     @include('layouts._newblog.footer')

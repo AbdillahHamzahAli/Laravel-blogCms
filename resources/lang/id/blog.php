@@ -35,7 +35,9 @@ return [
     ],
     'widget' => [
         'categories' => 'Kategori',
-        'tags' => "Tag"
+        'tags' => "Tag",
+        'post' => "Tulisan Terkini",
+        'link' => "Tautan"
     ],
     'no_data' => [
         'tags' => "Data tag belum ada",

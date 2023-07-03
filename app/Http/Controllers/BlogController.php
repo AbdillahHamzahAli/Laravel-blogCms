@@ -12,7 +12,7 @@ class BlogController extends Controller
     private $perPages = 10;
     public function home()
     {
-        return view('blog.home', [
+        return view('newblog.home', [
             'posts' => Post::publish()->latest()->paginate($this->perPages)
         ]);
     }

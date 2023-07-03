@@ -35,7 +35,9 @@ return [
     ],
     'widget' => [
         'categories' => 'Categories',
-        'tags' => "Tags"
+        'tags' => "Tags",
+        'post' => "Recent Posts",
+        'link' => "Link"
     ],
     'no_data' => [
         'tags' => "Tag data does not exist yet",

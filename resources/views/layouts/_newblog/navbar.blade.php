@@ -1,10 +1,10 @@
 <nav
-    class="z-10 w-full bg-white flex px-8 border-b md:py-4 justify-between md:border-b-2 border-black items-center fixed">
+    class="top-0 z-10 w-full bg-white  flex px-8 border-b md:py-4 justify-between md:border-b-2 border-black items-center fixed">
     <a class="text-lg font-bold md:py-0 py-4" href="{{ route('blog.home') }}">{{ config('app.name') }}</a>
-    <ul id="navbar" class="hidden bg-white md:px-2 md:flex md:space-x-2 absolute md:relative top-full left-0 right-0">
+    <ul id="navbar" class="hidden bg-white lg:px-2 lg:flex md:space-x-2 absolute lg:relative top-full left-0 right-0">
         <li>
             <form action="{{ route('blog.search') }}" method="GET"
-                class="flex md:inline-flex p-4 items-center bg-gray-50">
+                class="flex md:inline-flex w-full p-4 items-center bg-gray-50">
                 <button type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 pt-0.5 text-gray-600" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
@@ -13,7 +13,7 @@
                     </svg>
                 </button>
                 <input
-                    class="ml-2 text-base text-slate-900 placeholder:text-slate-600 focus:outline-none outline-none bg-transparent font-light"
+                    class="ml-2 text-base w-full text-slate-900 placeholder:text-slate-600 focus:outline-none outline-none bg-transparent font-light"
                     name="keyword" value="{{ request()->get('keyword') }}" type="search" id="search"
                     placeholder="{{ trans('blog.form_control.input.search.placeholder') }}" />
             </form>
@@ -102,7 +102,7 @@
         @endauth
         {{-- Auth End --}}
     </ul>
-    <div class="ml-auto md:hidden text-gray-500 cursor-pointer" onclick="navbarToogle()">
+    <div class="ml-auto lg:hidden text-gray-500 cursor-pointer" onclick="navbarToogle()">
         <svg xmlns="http://www.w3.org/2000/svg" id="close" class="hidden w-5 h-5 fill-current humbuger"
             viewBox="0 0 24 24">
             <path
