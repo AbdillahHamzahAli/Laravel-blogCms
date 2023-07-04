@@ -5,7 +5,7 @@ language : English
 return [
     'title' => [
         'home' => "Home",
-        'search' => "Search: :keyword",
+        'search' => " :keyword",
         'categories' => "Categories",
         'category' => "Category: :title",
         'tags' => "Tags",

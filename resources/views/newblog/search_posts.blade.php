@@ -1,22 +1,23 @@
 @extends('layouts.newblog')
 
 @section('title')
-    {{ trans('blog.title.home') }}
+    {{ request()->get('keyword') }}
 @endsection
 
 @section('content')
-    <section class="pb-10 lg:h-screen">
+    <section class="pb-10 h-screen">
         <div class="container">
             <div class="w-full px-4">
                 <div class="mx-auto mb-16 max-w-xl text-center">
-                    <h4 class="mb-2 text-lg font-semibold ">{{ trans('blog.title.home') }}</h4>
-                    <h2 class="mb-4 text-3xl font-bold  sm:text-4xl lg:text-5xl">{{ trans('blog.widget.post') }}
+                    <h4 class="mb-2 text-lg font-semibold ">{{ trans('blog.widget.post') }}</h4>
+                    <h2 class="mb-4 text-3xl font-bold  sm:text-4xl lg:text-5xl">
+                        {{ trans('blog.title.search', ['keyword' => request()->get('keyword')]) }}
                     </h2>
                 </div>
             </div>
             <div class="flex flex-wrap">
                 @forelse($posts as $post)
-                    <div class="w-full px-4 md:w-1/2 xl:w-1/3">
+                    <div class="w-full px-4 lg:w-1/2 xl:w-1/3">
                         <div class="max-w-md h-[420px] mx-auto bg-white shadow-md overflow-hidden relative">
                             <!-- thumbnail:start -->
                             @if (file_exists(public_path($post->thumbnail)))

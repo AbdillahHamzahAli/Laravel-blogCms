@@ -9,7 +9,7 @@ use App\Models\Tag;
 
 class BlogController extends Controller
 {
-    private $perPages = 10;
+    private $perPages = 2;
     public function home()
     {
         return view('newblog.home', [
@@ -34,8 +34,8 @@ class BlogController extends Controller
             return redirect()->route('blog.home');
         }
 
-        return view('blog.search_posts', [
-            'posts' => Post::publish()->search($request->keyword)
+        return view('newblog.search_posts', [
+            'posts' => Post::publish()->search($request->keyword)->latest()
                 ->paginate($this->perPages)
                 ->appends(['keyword' => $request->keyword])
         ]);
