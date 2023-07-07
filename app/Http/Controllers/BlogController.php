@@ -24,8 +24,8 @@ class BlogController extends Controller
     }
     public function showTags()
     {
-        return view('blog.tags', [
-            'tags' => Tag::paginate($this->perPages)
+        return view('newblog.tags', [
+            'tags' => Tag::orderBy('title', 'asc')->paginate(25)
         ]);
     }
     public function searchPosts(Request $request)
@@ -64,7 +64,7 @@ class BlogController extends Controller
         $tag = Tag::where('slug', $slug)->first();
         $tags = Tag::search($tag->title)->get();
 
-        return view('blog.posts-tag', [
+        return view('newblog.posts-tag', [
             'posts' => $posts,
             'tag' => $tag,
             'tags' => $tags

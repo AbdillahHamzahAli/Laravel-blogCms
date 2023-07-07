@@ -1,0 +1,80 @@
+@extends('layouts.newblog')
+
+@section('title')
+    {{ trans('blog.title.category', ['title' => $tag->title]) }}
+@endsection
+
+@section('content')
+    <section class="pb-10 lg:min-h-screen">
+        <div class="container">
+            <div class="w-full px-4">
+                <div class="mx-auto mb-16 max-w-xl text-center">
+                    <h4 class="mb-2 text-lg font-semibold">{{ trans('blog.title.categories') }}</h4>
+                    <h2 class="mb-4 text-3xl font-bold  sm:text-4xl lg:text-5xl">
+                        {{ trans('blog.title.tag', ['title' => $tag->title]) }}
+                </div>
+            </div>
+            <div class="w-full">
+                <!-- Title -->
+                <h2 class="mb-2 mt-0 text-3xl font-semibold leading-normal">
+                    Related Tag
+                </h2>
+                <!-- Resources -->
+                <div class="justify-start my-2 text-start">
+                    @foreach ($tags as $item)
+                        <a href="{{ route('blog.posts.tag', ['slug' => $item->slug]) }}"
+                            class="my-2 mx-1 inline-block rounded-sm {{ $item->title == $tag->title ? 'bg-black text-white' : ' hover:text-white hover:bg-black hover:scale-110' }} border-black border-2 px-6 pb-2 pt-2.5 text-xs font-medium uppercase  transition duration-150 ease-in-out">{{ $item->title }}</a>
+                    @endforeach
+                </div>
+                <!-- Resources -->
+            </div>
+            <div class="flex flex-wrap">
+                @forelse($posts as $post)
+                    <div class="w-full px-4 md:w-1/2 xl:w-1/3">
+                        <div class="max-w-md mb-8 h-[420px] mx-auto bg-white shadow-md overflow-hidden relative">
+                            <!-- thumbnail:start -->
+                            @if (file_exists(public_path($post->thumbnail)))
+                                <img class="w-full h-48 object-cover object-center" src="{{ asset($post->thumbnail) }}"
+                                    alt="{{ $post->title }}">
+                            @else
+                                <img class="w-full h-48 object-cover object-center" src="http://placehold.it/700x400"
+                                    alt="{{ $post->title }}">
+                            @endif
+                            <!-- thumbnail:end -->
+                            <div class="p-4 flex flex-col flex-grow">
+                                <h2 class="text-xl font-semibold text-gray-800">{{ $post->title }}</h2>
+                                <p class="pt-4 text-gray-600 text-sm md:text-base flex-grow">
+                                    {{ strlen($post->description) > 150 ? substr($post->description, 0, 150) . '...' : $post->description }}
+                                </p>
+                            </div>
+                            <div class="p-4 absolute bottom-0">
+                                <a href="{{ route('blog.post.detail', ['slug' => $post->slug]) }}"
+                                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center border-black border-2 hover:bg-black hover:text-white group">
+                                    {{ trans('blog.button.read_more.value') }}
+                                    <svg aria-hidden="true" class="group-hover:ml-4 duration-300 w-4 h-4 ml-2 -mr-1"
+                                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <h3 class="w-full text-center">
+                        {{ trans('blog.no_data.posts') }}
+                    </h3>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    @if ($posts->hasPages())
+        <div class="container pb-10">
+            <div class="w-full flex justify-end px-4">
+                {{ $posts->links('vendor.pagination.tailwind') }}
+            </div>
+        </div>
+    @endif
+@endsection
