@@ -5,7 +5,7 @@
 
 
         <div class="flex lg:flex-row sm:flex-1 sm:flex items-center sm:justify-between">
-            <p class="text-sm leading-5 dark:text-gray-300">
+            <p class="hidden md:inline text-sm leading-5 dark:text-gray-300">
                 {{ __('pagination.showing') }}
                 <span class="font-medium">{{ $paginator->firstItem() }}</span>
                 {{ __('pagination.to') }}
