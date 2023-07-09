@@ -37,7 +37,8 @@ return [
         'categories' => 'Kategori',
         'tags' => "Tag",
         'post' => "Tulisan Terkini",
-        'link' => "Tautan"
+        'link' => "Tautan",
+        'related_post' => "Tulisan Terkait"
     ],
     'no_data' => [
         'tags' => "Data tag belum ada",

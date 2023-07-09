@@ -9,6 +9,8 @@
     @stack('css-internal')
     <!-- icon flag -->
     <link rel="stylesheet" href="{{ asset('vendor/flag-icon-css/css/flag-icon.min.css') }}">
+    <!-- fontawesome -->
+    <script src="{{ asset('vendor/fontawesome-free/js/all.min.js') }}"></script>
 </head>
 
 <body class="min-h-screen flex flex-col">

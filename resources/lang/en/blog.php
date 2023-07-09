@@ -37,7 +37,8 @@ return [
         'categories' => 'Categories',
         'tags' => "Tags",
         'post' => "Recent Posts",
-        'link' => "Link"
+        'link' => "Link",
+        'related_post' => "Related Posts"
     ],
     'no_data' => [
         'tags' => "Tag data does not exist yet",

@@ -76,9 +76,12 @@ class BlogController extends Controller
         if (!$post) {
             return redirect()->route('blog.home');
         }
-        // dd($post);
-        return view('blog.post-detail', [
-            'post' => $post
+        $postsByCategories = Post::publish()->whereHas('categories', function ($query) use ($post, $slug) {
+            return $query->where('slug', $post->categories->first()->slug);
+        })->where('slug', 'NOT LIKE', $slug)->latest()->limit(4)->get();
+        return view('newblog.post-detail', [
+            'posts' => $postsByCategories,
+            'post' => $post,
         ]);
     }
 }
