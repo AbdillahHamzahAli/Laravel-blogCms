@@ -18,6 +18,7 @@ https://youtube.com/playlist?list=PLhG9IAaB9ArrTsTAOWNTi0D2jkLQ6vA5f
 ## Installation
 
 Required software
+- [XAMPP](https://www.apachefriends.org/)
 - [NodeJS](https://nodejs.org)
 - [Composer](https://getcomposer.org/download/)
 
@@ -37,6 +38,8 @@ $ php artisan storage:link
 $ npm run build
 ```
 ## Important
+
+*RUN PHP AND MYSQL*
 
 Create a database in phpmyadmin with the name `laravel_blogcms` and import the database from `asset\db\laravel_blogcms.sql` (if you don't know how to import sql here is the tutorial : https://youtu.be/jW5lrS6EUPM )
 
