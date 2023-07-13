@@ -16,7 +16,7 @@ https://youtube.com/playlist?list=PLhG9IAaB9ArrTsTAOWNTi0D2jkLQ6vA5f
 - Manage User
 
 ## Live Preview
-- [TenkoArena]([https://www.apachefriends.org/](https://tenkoarena.000webhostapp.com/))
+- [TenkoArena](https://tenkoarena.000webhostapp.com/)
 
 ## Installation
 
